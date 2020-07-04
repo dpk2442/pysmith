@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  test_py_3.8:
+  test_py_3_8:
     runs-on: ubuntu-latest
 
     steps:
