@@ -5,13 +5,7 @@ from unittest.mock import call
 import pytest
 
 from pysmith import FileInfo, Pysmith
-from .util import create_patch
-
-
-class MockFileInfo(object):
-
-    def __init__(self, contents):
-        self.contents = contents
+from .util import MockFileInfo, create_patch
 
 
 @pytest.fixture
