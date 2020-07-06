@@ -1,5 +1,6 @@
 import sys
 import unittest.mock
+from unittest.mock import call
 
 import pytest
 
@@ -43,6 +44,7 @@ def test_valid_files(mock_parse):
     frontmatter = Frontmatter()
     frontmatter.build(files)
 
+    mock_parse.assert_has_calls((call("contents1"), call("contents2"), call("contents3")))
     assert files == {
         "file1": MockFileInfo(b"newContents1", {"key1": "value1"}),
         "file2": MockFileInfo(b"newContents2", {"key2": "value2"}),
