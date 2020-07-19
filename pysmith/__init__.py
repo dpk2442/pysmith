@@ -3,10 +3,15 @@
     reading of the files, pipeline execution, and finally writing of the files.
 """
 
+import logging
 import os
 import shutil
+import time
 
 from .util import scantree
+
+
+logger = logging.getLogger("pysmith")
 
 
 class FileInfo(object):
@@ -92,11 +97,30 @@ class Pysmith(object):
         self._dest = dest
         self._plugins = []
 
+    def enable_logging(self):
+        """
+            Enables basic logging while the build is running.
+
+            :returns: self
+        """
+
+        formatter = logging.Formatter("{asctime} - {levelname:>8} - {name} - {message}", style="{")
+
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.INFO)
+        ch.setFormatter(formatter)
+
+        logger.setLevel(logging.INFO)
+        logger.addHandler(ch)
+
+        return self
+
     def use(self, plugin):
         """
             Add a new plugin instance to the pipeline.
 
             :param plugin: A plugin that implements the :meth:`build` method.
+            :returns: self
         """
 
         if not callable(plugin.build):
@@ -108,6 +132,8 @@ class Pysmith(object):
     def clean(self):
         """
             Recursively deletes the destination directory.
+
+            :returns: self
         """
 
         shutil.rmtree(self._dest, onerror=self._handle_clean_error)
@@ -118,12 +144,19 @@ class Pysmith(object):
             Executes the plugins in the pipeline to run the build.
         """
 
+        start_time = time.time()
+        logger.info("Starting the build...")
+
         files = self._load_files()
         for plugin in self._plugins:
+            logger.info("Executing {}".format(type(plugin).__name__))
             plugin.build(files)
 
+        logger.info("Writing the output files to disk...")
         for file_name, file_info in files.items():
             self._write_file(file_name, file_info.contents)
+
+        logger.info("Build completed in {:.2}ms".format(time.time() - start_time))
 
     def _handle_clean_error(self, fn, path, exception_info):
         if exception_info[0] != FileNotFoundError:
