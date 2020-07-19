@@ -20,7 +20,7 @@ def mock_scantree(monkeypatch):
 
 @pytest.fixture
 def mock_file_info_from_entry(monkeypatch):
-    return create_patch(monkeypatch, "pysmith.FileInfo.from_entry")
+    return create_patch(monkeypatch, "pysmith.FileInfo._from_entry")
 
 
 @pytest.fixture
