@@ -56,7 +56,7 @@ class TestFileInfo(object):
         entry.stat.return_value = "stats"
 
         with unittest.mock.patch("pysmith.open", mock_open):
-            info = FileInfo.from_entry(entry)
+            info = FileInfo._from_entry(entry)
 
         assert info.name == "name"
         assert info.path == "path"

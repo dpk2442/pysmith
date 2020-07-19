@@ -4,6 +4,12 @@ import frontmatter
 
 
 class Frontmatter(object):
+    """
+        Parses YAML frontmatter from files. The parsed frontmatter metadata will be added to the file's
+        :attr:`~pysmith.FileInfo.metadata` and removed from the :attr:`~pysmith.FileInfo.contents`.
+
+        :param str match_pattern: The pattern of files to parse metadata from.
+    """
 
     def __init__(self, *, match_pattern="*"):
         self._match_pattern = match_pattern
