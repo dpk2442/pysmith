@@ -28,12 +28,12 @@ class FileInfo(object):
 
             The stats of the file, as returned by :func:`os.stat`.
 
-        .. attribute:: metadata 
+        .. attribute:: metadata
             :type: dict(str, object)
 
             The metadata of the file. This is a generic dictionary that can be modified by plugins.
 
-        .. attribute:: contents 
+        .. attribute:: contents
             :type: bytes
 
             The raw binary contents of the file.
