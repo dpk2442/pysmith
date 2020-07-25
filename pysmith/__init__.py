@@ -97,7 +97,7 @@ class Pysmith(object):
         self._dest = dest
         self._plugins = []
 
-    def enable_logging(self):
+    def enable_logging(self):  # pragma: no cover
         """
             Enables basic logging while the build is running.
 

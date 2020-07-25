@@ -24,6 +24,10 @@ The following plugins are designed specifically for building static sites.
 
   - This plugin renders markdown files into HTML.
 
+- :doc:`Sass <plugins/web/sass>`
+
+  - This plugin compiles sass/scss files into css.
+
 - :doc:`Template <plugins/web/template>`
 
   - This plugin processes the contents of the file using a template.

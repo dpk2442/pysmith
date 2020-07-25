@@ -47,13 +47,15 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # A list of imports to mock when autodoc imports modules
 autodoc_mock_imports = [
     "frontmatter",
-    "markdown2",
     "jinja2",
+    "markdown2",
+    "sass",
 ]
 
 # The external mappings for intersphinx
 intersphinx_mapping = {
     "jinja2": ("https://jinja.palletsprojects.com/en/2.11.x/", None),
+    "sass": ("https://sass.github.io/libsass-python/", None),
 }
 
 

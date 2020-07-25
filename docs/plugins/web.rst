@@ -6,4 +6,5 @@ Web
     :titlesonly:
 
     web/markdown
+    web/sass
     web/template
