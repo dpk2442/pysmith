@@ -23,7 +23,7 @@ def test_skips_unmatched_files(mock_markdown2):
     }
 
     markdown = Markdown()
-    markdown.build(files)
+    markdown.build(None, files)
 
     mock_markdown2.assert_not_called()
 
@@ -37,7 +37,7 @@ def test_valid_files(mock_markdown2):
     mock_markdown2.side_effect = ("parsedContents1", "parsedContents2")
 
     markdown = Markdown()
-    markdown.build(files)
+    markdown.build(None, files)
 
     mock_markdown2.assert_has_calls((call("contents1", extras=None), call("contents2", extras=None)))
     assert files == {
@@ -54,7 +54,7 @@ def test_extras(mock_markdown2):
     mock_markdown2.return_value = "parsedContents"
 
     markdown = Markdown(extras="test")
-    markdown.build(files)
+    markdown.build(None, files)
 
     mock_markdown2.assert_called_once_with("contents", extras="test")
     assert files == {

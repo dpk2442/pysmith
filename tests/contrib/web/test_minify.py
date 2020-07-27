@@ -23,7 +23,7 @@ def test_skips_unmatched_files(mock_jsmin):
     }
 
     minify = Minify()
-    minify.build(files)
+    minify.build(None, files)
 
     mock_jsmin.assert_not_called()
 
@@ -37,7 +37,7 @@ def test_valid_files(mock_jsmin):
     mock_jsmin.side_effect = (b"parsedContents1", b"parsedContents2")
 
     minify = Minify()
-    minify.build(files)
+    minify.build(None, files)
 
     mock_jsmin.assert_has_calls((call(b"contents1"), call(b"contents2")))
     assert files == {

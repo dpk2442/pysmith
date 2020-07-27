@@ -33,7 +33,7 @@ class _BaseTemplate(object):
                 if isinstance(val, jinja2.runtime.Macro):
                     self._jinja.globals[key] = val
 
-    def build(self, files):
+    def build(self, build_info, files):
         for file_name in list(files.keys()):
             if not fnmatch.fnmatch(file_name, self._match_pattern):
                 continue

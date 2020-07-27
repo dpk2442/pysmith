@@ -23,7 +23,7 @@ def test_skips_unmatched_files(mock_compile):
     }
 
     sass = Sass()
-    sass.build(files)
+    sass.build(None, files)
 
     mock_compile.assert_not_called()
 
@@ -36,7 +36,7 @@ def test_valid_files_no_rename(mock_compile):
     mock_compile.return_value = "parsedContents1"
 
     sass = Sass(output_extension=".scss")
-    sass.build(files)
+    sass.build(None, files)
 
     mock_compile.assert_called_once_with(string="contents1")
     assert files == {
@@ -53,7 +53,7 @@ def test_valid_files_rename(mock_compile):
     mock_compile.side_effect = ("parsedContents1", "parsedContents2")
 
     sass = Sass()
-    sass.build(files)
+    sass.build(None, files)
 
     mock_compile.assert_has_calls((call(string="contents1"), call(string="contents2")))
     assert files == {
@@ -70,7 +70,7 @@ def test_compile_args(mock_compile):
     mock_compile.return_value = "parsedContents1"
 
     sass = Sass(compile_args={"extra_arg": "value"})
-    sass.build(files)
+    sass.build(None, files)
 
     mock_compile.assert_called_once_with(string="contents1", extra_arg="value")
     assert files == {

@@ -14,6 +14,27 @@ from .util import scantree
 logger = logging.getLogger("pysmith")
 
 
+class BuildInfo(object):
+    """
+        Contains information for the current build.
+
+        .. attribute:: metadata
+            :type: dict(str, object)
+
+            The global metadata for the build.
+    """
+
+    __slots__ = ("metadata",)
+
+    def __init__(self):
+        self.metadata = {}
+
+    def __repr__(self):  # pragma: no cover
+        self_type = type(self)
+        attrs = ", ".join("{}={!r}".format(k, getattr(self, k)) for k in self.__slots__)
+        return "{}.{}({})".format(self_type.__module__, self_type.__name__, attrs)
+
+
 class FileInfo(object):
     """
         Contains the data for a file to be processed.
@@ -71,7 +92,7 @@ class FileInfo(object):
         return self._contents
 
     @contents.setter
-    def contents(self, value: bytes):
+    def contents(self, value):
         if not isinstance(value, bytes):
             raise ValueError("contents field must be a bytes object")
 
@@ -147,10 +168,11 @@ class Pysmith(object):
         start_time = time.time()
         logger.info("Starting the build...")
 
+        build_info = BuildInfo()
         files = self._load_files()
         for plugin in self._plugins:
             logger.info("Executing {}".format(type(plugin).__name__))
-            plugin.build(files)
+            plugin.build(build_info, files)
 
         logger.info("Writing the output files to disk...")
         for file_name, file_info in files.items():

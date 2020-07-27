@@ -4,7 +4,7 @@ from unittest.mock import call
 
 import pytest
 
-from pysmith import FileInfo, Pysmith
+from pysmith import BuildInfo, FileInfo, Pysmith
 from .util import MockFileInfo, create_patch
 
 
@@ -43,6 +43,13 @@ def mock_open(monkeypatch):
     mock = unittest.mock.mock_open()
     monkeypatch.patch("__builtin__.open", mock)
     return mock
+
+
+class TestBuildInfo(object):
+
+    def test_constructor(self):
+        build_info = BuildInfo()
+        assert build_info.metadata == {}
 
 
 class TestFileInfo(object):
@@ -107,9 +114,11 @@ class TestPysmith(object):
 
         mock_rmtree.assert_called_once_with(pysmith._dest, onerror=pysmith._handle_clean_error)
 
-    def test_build(self):
+    def test_build(self, monkeypatch):
         mock_plugin1 = unittest.mock.Mock()
         mock_plugin2 = unittest.mock.Mock()
+        mock_build_info_constructor = create_patch(monkeypatch, "pysmith.BuildInfo")
+        mock_build_info = mock_build_info_constructor.return_value
         mock_files = {
             "f1": MockFileInfo("value1"),
             "f2": MockFileInfo("value2"),
@@ -124,8 +133,8 @@ class TestPysmith(object):
         pysmith.build()
 
         pysmith._load_files.assert_called_once_with()
-        mock_plugin1.build.assert_called_once_with(mock_files)
-        mock_plugin2.build.assert_called_once_with(mock_files)
+        mock_plugin1.build.assert_called_once_with(mock_build_info, mock_files)
+        mock_plugin2.build.assert_called_once_with(mock_build_info, mock_files)
         pysmith._write_file.assert_has_calls((
             call("f1", "value1"),
             call("f2", "value2"),

@@ -21,7 +21,7 @@ class Sass(object):
         self._output_extension = output_extension
         self._compile_args = compile_args
 
-    def build(self, files):
+    def build(self, build_info, files):
         for file_name in list(files.keys()):
             if not self._match_pattern.search(file_name):
                 continue
