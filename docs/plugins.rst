@@ -11,6 +11,10 @@ Core
 
 The following plugins are core plugins and generally useful.
 
+- :doc:`Collection <plugins/core/collection>`
+
+  - This plugin creates a collection of files.
+
 - :doc:`Frontmatter <plugins/core/frontmatter>`
 
   - This plugin parses YAML frontmatter into the file's metadata.
