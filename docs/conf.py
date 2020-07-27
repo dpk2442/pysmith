@@ -49,12 +49,14 @@ autodoc_mock_imports = [
     "frontmatter",
     "jinja2",
     "markdown2",
+    "rjsmin",
     "sass",
 ]
 
 # The external mappings for intersphinx
 intersphinx_mapping = {
     "jinja2": ("https://jinja.palletsprojects.com/en/2.11.x/", None),
+    "rjsmin": ("http://opensource.perlig.de/rjsmin", None),
     "sass": ("https://sass.github.io/libsass-python/", None),
 }
 

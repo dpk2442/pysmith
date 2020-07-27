@@ -24,6 +24,10 @@ The following plugins are designed specifically for building static sites.
 
   - This plugin renders markdown files into HTML.
 
+- :doc:`Minify <plugins/web/minify>`
+
+  - This plugin minifies javascript using jsmin.
+
 - :doc:`Sass <plugins/web/sass>`
 
   - This plugin compiles sass/scss files into css.

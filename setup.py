@@ -7,6 +7,7 @@ setup(
     extras_require={
         "frontmatter": ["python-frontmatter>=0.5.0"],
         "markdown": ["markdown2>=2.3.9"],
+        "minify": ["rjsmin>=1.1.0"],
         "sass": ["libsass>=0.20.0"],
         "template": ["Jinja2>=2.11.2"],
     }
