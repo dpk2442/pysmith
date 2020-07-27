@@ -4,6 +4,7 @@ from unittest.mock import call
 
 import pytest
 
+from pysmith import BuildInfo
 from tests.util import MockFileInfo, create_patch
 
 sys.modules["jinja2"] = unittest.mock.Mock()
@@ -88,14 +89,15 @@ class TestBaseTemplate(object):
             "test2.md": mock_file_2,
         }
 
+        build_info = BuildInfo()
         template = _BaseTemplate(match_pattern="*.md")
         template.process_file = mock_process_file
-        template.build(None, files)
+        template.build(build_info, files)
 
         mock_environment_constructor.assert_called_once_with()
         mock_process_file.assert_has_calls((
-            call("test1.md", mock_file_1),
-            call("test2.md", mock_file_2),
+            call(build_info, "test1.md", mock_file_1),
+            call(build_info, "test2.md", mock_file_2),
         ))
         assert files == {
             "test1.md": MockFileInfo("contents1"),
@@ -112,7 +114,7 @@ class TestContentTemplate(object):
 
         file_info = MockFileInfo(b"original")
         template = ContentTemplate()
-        template.process_file("name", file_info)
+        template.process_file(None, "name", file_info)
 
         mock_from_string.assert_called_once_with("original")
         mock_template.render.assert_called_once_with()
@@ -155,10 +157,13 @@ class TestLayoutTemplate(object):
         mock_template = mock_get_template.return_value
         mock_template.render.return_value = "rendered"
 
+        build_info = BuildInfo()
+        build_info.metadata["key"] = "value"
         template = LayoutTemplate(output_extension=output_extension)
-        output_name = template.process_file(input_name, file_info)
+        output_name = template.process_file(build_info, input_name, file_info)
 
         mock_get_template.assert_called_once_with("test")
-        mock_template.render.assert_called_once_with(contents="contents", page={"layout": "test"})
+        mock_template.render.assert_called_once_with(
+            contents="contents", page={"layout": "test"}, site={"key": "value"})
         assert output_name == expected_output_name
         assert file_info == MockFileInfo(b"rendered", metadata={"layout": "test"})

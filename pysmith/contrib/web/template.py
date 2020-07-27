@@ -38,12 +38,12 @@ class _BaseTemplate(object):
             if not fnmatch.fnmatch(file_name, self._match_pattern):
                 continue
 
-            output_name = self.process_file(file_name, files[file_name])
+            output_name = self.process_file(build_info, file_name, files[file_name])
             if output_name is not None:
                 files[output_name] = files[file_name]
                 del files[file_name]
 
-    def process_file(self, file_name, file_info):  # pragma: no cover
+    def process_file(self, build_info, file_name, file_info):  # pragma: no cover
         raise NotImplementedError("process_file is not implemented")
 
 
@@ -53,7 +53,7 @@ class ContentTemplate(_BaseTemplate):
         source files. All parameters specified in :class:`_BaseTemplate` are valid for this class as well.
     """
 
-    def process_file(self, file_name, file_info):
+    def process_file(self, build_info, file_name, file_info):
         template = self._jinja.from_string(file_info.contents.decode())
         file_info.contents = template.render().encode()
 
@@ -61,9 +61,11 @@ class ContentTemplate(_BaseTemplate):
 class LayoutTemplate(_BaseTemplate):
     """
         Treats the contents of the files as a variable to pass into a template. The layout to use is selected by the
-        `layout_selector` parameter. When the template is rendered, the file contents will be available in the rendering
-        context as `contents` and the file metadata will be available as `page`. In addition to the parameters specified
-        below, all parameters specified in :class:`_BaseTemplate` are valid for this class as well.
+        `layout_selector` parameter. When the template is rendered, the file :attr:`~pysmith.FileInfo.contents` will be
+        available in the rendering context as `contents`, the file :attr:`~pysmith.FileInfo.metadata` will be available
+        as `page`, and the build info :attr:`~pysmith.BuildInfo.metadata` will be available as `site`. In addition to
+        the parameters specified below, all parameters specified in :class:`_BaseTemplate` are valid for this class as
+        well.
 
         :param layout_selector: The layout selector. If this is a string, it will be used as the key to look up the
                                 template in the file metadata. If this is a function, it will be executed to find the
@@ -84,10 +86,11 @@ class LayoutTemplate(_BaseTemplate):
         else:
             self._layout_selector = layout_selector
 
-    def process_file(self, file_name, file_info):
+    def process_file(self, build_info, file_name, file_info):
         template = self._jinja.get_template(self._layout_selector(file_info))
         file_info.contents = template.render(contents=file_info.contents.decode(),
-                                             page=file_info.metadata).encode()
+                                             page=file_info.metadata,
+                                             site=build_info.metadata).encode()
         file_name_parts = os.path.splitext(file_name)
         if file_name_parts[1] == self._output_extension:
             return None
