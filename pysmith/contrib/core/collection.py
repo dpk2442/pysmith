@@ -35,6 +35,5 @@ class Collection(object):
             raise ValueError("Collection \"{}\" already defined".format(self._collection_name))
 
         filtered_files = [f for file_name, f in files.items() if fnmatch.fnmatch(file_name, self._match_pattern)]
-        print(filtered_files)
         filtered_files.sort(key=self._order_by)
         build_info.metadata[COLLECTIONS_KEY][self._collection_name] = filtered_files
