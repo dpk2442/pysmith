@@ -74,7 +74,7 @@ class TestBaseTemplate(object):
 
         template = _BaseTemplate(match_pattern="*.md")
         template.process_file = mock_process_file
-        template.build(None, files)
+        template.build(BuildInfo(files))
 
         mock_environment_constructor.assert_called_once_with()
         mock_process_file.assert_not_called()
@@ -89,10 +89,10 @@ class TestBaseTemplate(object):
             "test2.md": mock_file_2,
         }
 
-        build_info = BuildInfo()
+        build_info = BuildInfo(files)
         template = _BaseTemplate(match_pattern="*.md")
         template.process_file = mock_process_file
-        template.build(build_info, files)
+        template.build(build_info)
 
         mock_environment_constructor.assert_called_once_with()
         mock_process_file.assert_has_calls((

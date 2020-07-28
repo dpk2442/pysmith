@@ -133,8 +133,9 @@ class TestPysmith(object):
         pysmith.build()
 
         pysmith._load_files.assert_called_once_with()
-        mock_plugin1.build.assert_called_once_with(mock_build_info, mock_files)
-        mock_plugin2.build.assert_called_once_with(mock_build_info, mock_files)
+        mock_build_info_constructor.assert_called_once_with(pysmith._load_files.return_value)
+        mock_plugin1.build.assert_called_once_with(mock_build_info)
+        mock_plugin2.build.assert_called_once_with(mock_build_info)
         pysmith._write_file.assert_has_calls((
             call("f1", "value1"),
             call("f2", "value2"),

@@ -29,7 +29,7 @@ def test_collections_key_defined():
     build_info.metadata[COLLECTIONS_KEY] = {}
 
     collection = Collection(collection_name="test", match_pattern="*.md", order_by="order")
-    collection.build(build_info, {})
+    collection.build(build_info)
 
     assert COLLECTIONS_KEY in build_info.metadata
     assert "test" in build_info.metadata[COLLECTIONS_KEY]
@@ -45,7 +45,7 @@ def test_duplicate_collection_name():
     collection = Collection(collection_name="test", match_pattern="*.md", order_by="order")
 
     with pytest.raises(ValueError):
-        collection.build(build_info, {})
+        collection.build(build_info)
 
 
 def test_build():
@@ -62,9 +62,9 @@ def test_build():
         "z.md": ordered_file_1,
     }
 
-    build_info = BuildInfo()
+    build_info = BuildInfo(files)
     collection = Collection(collection_name="test", match_pattern="*.md", order_by="order")
-    collection.build(build_info, files)
+    collection.build(build_info)
 
     assert COLLECTIONS_KEY in build_info.metadata
     assert "test" in build_info.metadata[COLLECTIONS_KEY]

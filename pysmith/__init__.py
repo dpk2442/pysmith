@@ -22,12 +22,20 @@ class BuildInfo(object):
             :type: dict(str, object)
 
             The global metadata for the build.
+
+        .. attribute:: files
+            :type: dict(str, FileInfo)
+
+            The files uses the file path relative to the source folder as the key and :class:`~pysmith.FileInfo` objects
+            as the values. Keys can be added or removed by the plugin, and files can be modified. At the end of the
+            processing pipeline, files will be written based on the keys relative to the destination directory.
     """
 
-    __slots__ = ("metadata",)
+    __slots__ = ("metadata", "files")
 
-    def __init__(self):
+    def __init__(self, files=None):
         self.metadata = {}
+        self.files = files or {}
 
     def __repr__(self):  # pragma: no cover
         self_type = type(self)
@@ -168,11 +176,11 @@ class Pysmith(object):
         start_time = time.time()
         logger.info("Starting the build...")
 
-        build_info = BuildInfo()
         files = self._load_files()
+        build_info = BuildInfo(files)
         for plugin in self._plugins:
             logger.info("Executing {}".format(type(plugin).__name__))
-            plugin.build(build_info, files)
+            plugin.build(build_info)
 
         logger.info("Writing the output files to disk...")
         for file_name, file_info in files.items():

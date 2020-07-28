@@ -14,8 +14,8 @@ class Frontmatter(object):
     def __init__(self, *, match_pattern="*"):
         self._match_pattern = match_pattern
 
-    def build(self, build_info, files):
-        for file_name, file_info in files.items():
+    def build(self, build_info):
+        for file_name, file_info in build_info.files.items():
             if not fnmatch.fnmatch(file_name, self._match_pattern):
                 continue
 

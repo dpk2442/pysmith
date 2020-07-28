@@ -21,15 +21,15 @@ class Sass(object):
         self._output_extension = output_extension
         self._compile_args = compile_args
 
-    def build(self, build_info, files):
-        for file_name in list(files.keys()):
+    def build(self, build_info):
+        for file_name in list(build_info.files.keys()):
             if not self._match_pattern.search(file_name):
                 continue
 
-            f = files[file_name]
+            f = build_info.files[file_name]
             f.contents = sass.compile(string=f.contents, **self._compile_args).encode()
 
             file_name_parts = os.path.splitext(file_name)
             if file_name_parts[1] != self._output_extension:
-                del files[file_name]
-                files[file_name_parts[0] + self._output_extension] = f
+                del build_info.files[file_name]
+                build_info.files[file_name_parts[0] + self._output_extension] = f

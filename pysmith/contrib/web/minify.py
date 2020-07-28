@@ -14,8 +14,8 @@ class Minify(object):
     def __init__(self, js_match_pattern="*.js"):
         self._js_match_pattern = js_match_pattern
 
-    def build(self, build_info, files):
-        for file_name, f in files.items():
+    def build(self, build_info):
+        for file_name, f in build_info.files.items():
             if not fnmatch.fnmatch(file_name, self._js_match_pattern):
                 continue
 

@@ -4,6 +4,7 @@ from unittest.mock import call
 
 import pytest
 
+from pysmith import BuildInfo
 from tests.util import MockFileInfo, create_patch
 
 sys.modules["rjsmin"] = unittest.mock.Mock()
@@ -23,7 +24,7 @@ def test_skips_unmatched_files(mock_jsmin):
     }
 
     minify = Minify()
-    minify.build(None, files)
+    minify.build(BuildInfo(files))
 
     mock_jsmin.assert_not_called()
 
@@ -37,7 +38,7 @@ def test_valid_files(mock_jsmin):
     mock_jsmin.side_effect = (b"parsedContents1", b"parsedContents2")
 
     minify = Minify()
-    minify.build(None, files)
+    minify.build(BuildInfo(files))
 
     mock_jsmin.assert_has_calls((call(b"contents1"), call(b"contents2")))
     assert files == {

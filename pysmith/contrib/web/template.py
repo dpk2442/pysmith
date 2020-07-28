@@ -33,15 +33,15 @@ class _BaseTemplate(object):
                 if isinstance(val, jinja2.runtime.Macro):
                     self._jinja.globals[key] = val
 
-    def build(self, build_info, files):
-        for file_name in list(files.keys()):
+    def build(self, build_info):
+        for file_name in list(build_info.files.keys()):
             if not fnmatch.fnmatch(file_name, self._match_pattern):
                 continue
 
-            output_name = self.process_file(build_info, file_name, files[file_name])
+            output_name = self.process_file(build_info, file_name, build_info.files[file_name])
             if output_name is not None:
-                files[output_name] = files[file_name]
-                del files[file_name]
+                build_info.files[output_name] = build_info.files[file_name]
+                del build_info.files[file_name]
 
     def process_file(self, build_info, file_name, file_info):  # pragma: no cover
         raise NotImplementedError("process_file is not implemented")
