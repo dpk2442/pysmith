@@ -75,6 +75,37 @@ class TestBuildInfo(object):
             ("file3.js", "file3"),
         ]
 
+    def test_rename_file_invalid_name(self):
+        build_info = BuildInfo(files={
+            "file1.txt": "contents",
+        })
+
+        with pytest.raises(ValueError):
+            build_info.rename_file("bad_name", "new_name")
+
+    def test_rename_file_same_name(self):
+        mock_files = unittest.mock.MagicMock()
+        mock_files.__contains__.return_value = True
+
+        build_info = BuildInfo(files=mock_files)
+
+        build_info.rename_file("name", "name")
+
+        mock_files.__getitem__.assert_not_called()
+        mock_files.__delitem__.assert_not_called()
+        mock_files.__setitem__.assert_not_called()
+
+    def test_rename_file_success(self):
+        build_info = BuildInfo(files={
+            "file1.txt": "contents",
+        })
+
+        build_info.rename_file("file1.txt", "file2.txt")
+
+        assert build_info.files == {
+            "file2.txt": "contents",
+        }
+
 
 class TestFileInfo(object):
 

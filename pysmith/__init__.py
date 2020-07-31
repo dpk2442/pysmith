@@ -60,6 +60,24 @@ class BuildInfo(object):
             if regex.search(file_name):
                 yield file_name, self.files[file_name]
 
+    def rename_file(self, file_name, new_file_name):
+        """
+            Renames a file in the :attr:`files` object. If the new file name matches the old, no action is taken.
+
+            :param str file_name: The existing name of the file.
+            :param str new_file_name: The new name for the file.
+        """
+
+        if file_name not in self.files:
+            raise ValueError("The specified file name does not exist")
+
+        if file_name == new_file_name:
+            return
+
+        file_info = self.files[file_name]
+        del self.files[file_name]
+        self.files[new_file_name] = file_info
+
     def __repr__(self):  # pragma: no cover
         self_type = type(self)
         attrs = ", ".join("{}={!r}".format(k, getattr(self, k)) for k in self.__slots__)
