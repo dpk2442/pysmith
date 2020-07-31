@@ -1,6 +1,3 @@
-import fnmatch
-
-
 COLLECTIONS_KEY = "collections"
 
 
