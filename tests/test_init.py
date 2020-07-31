@@ -1,4 +1,5 @@
 import os
+import re
 import unittest.mock
 from unittest.mock import call
 
@@ -50,6 +51,29 @@ class TestBuildInfo(object):
     def test_constructor(self):
         build_info = BuildInfo()
         assert build_info.metadata == {}
+
+    def test_get_files_by_pattern(self):
+        build_info = BuildInfo(files={
+            "file1.html": "file1",
+            "file2.css": "file2",
+        })
+
+        assert list(build_info.get_files_by_pattern("*.css")) == [
+            ("file2.css", "file2"),
+        ]
+
+    def test_get_files_by_regex(self):
+        build_info = BuildInfo(files={
+            "file1.html": "file1",
+            "file2.css": "file2",
+            "file3.js": "file3",
+        })
+
+        regex = re.compile(r".*\.(html|js)")
+        assert list(build_info.get_files_by_regex(regex)) == [
+            ("file1.html", "file1"),
+            ("file3.js", "file3"),
+        ]
 
 
 class TestFileInfo(object):

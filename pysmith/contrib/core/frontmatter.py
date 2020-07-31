@@ -15,10 +15,7 @@ class Frontmatter(object):
         self._match_pattern = match_pattern
 
     def build(self, build_info):
-        for file_name, file_info in build_info.files.items():
-            if not fnmatch.fnmatch(file_name, self._match_pattern):
-                continue
-
+        for file_name, file_info in build_info.get_files_by_pattern(self._match_pattern):
             metadata, contents = frontmatter.parse(file_info.contents)
             file_info.metadata.update(metadata)
             file_info.contents = contents.encode()

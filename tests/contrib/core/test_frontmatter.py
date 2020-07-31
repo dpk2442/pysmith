@@ -16,19 +16,6 @@ def mock_parse(monkeypatch):
     return create_patch(monkeypatch, "frontmatter.parse")
 
 
-def test_skips_unmatched_files(mock_parse):
-    files = {
-        "test1.html": None,
-        "test2.js": None,
-        "test3.css": None,
-    }
-
-    frontmatter = Frontmatter(match_pattern="*.md")
-    frontmatter.build(BuildInfo(files))
-
-    mock_parse.assert_not_called()
-
-
 def test_valid_files(mock_parse):
     files = {
         "file1": MockFileInfo("contents1"),

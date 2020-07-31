@@ -19,8 +19,5 @@ class Markdown(object):
         self._extras = extras
 
     def build(self, build_info):
-        for file_name, f in build_info.files.items():
-            if not fnmatch.fnmatch(file_name, self._match_pattern):
-                continue
-
+        for file_name, f in build_info.get_files_by_pattern(self._match_pattern):
             f.contents = markdown2.markdown(f.contents, extras=self._extras).encode()

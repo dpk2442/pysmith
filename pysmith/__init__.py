@@ -3,6 +3,7 @@
     reading of the files, pipeline execution, and finally writing of the files.
 """
 
+import fnmatch
 import logging
 import os
 import shutil
@@ -36,6 +37,28 @@ class BuildInfo(object):
     def __init__(self, files=None):
         self.metadata = {}
         self.files = files or {}
+
+    def get_files_by_pattern(self, match_pattern):
+        """
+            Retrieves files from the :attr:`files` object using the given glob pattern.
+
+            :param str match_pattern: The pattern to pass to :func:`fnmatch.filter`.
+        """
+
+        for file_name in fnmatch.filter(self.files.keys(), match_pattern):
+            yield file_name, self.files[file_name]
+
+    def get_files_by_regex(self, regex):
+        """
+            Retrieves files from the :attr:`files` object using the given regex.
+
+            :param regex: The regular expression to use, compiled using :func:`re.compile`.
+            :type regex: :class:`re.Pattern`
+        """
+
+        for file_name in list(self.files.keys()):
+            if regex.search(file_name):
+                yield file_name, self.files[file_name]
 
     def __repr__(self):  # pragma: no cover
         self_type = type(self)

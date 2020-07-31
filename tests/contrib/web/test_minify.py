@@ -16,19 +16,6 @@ def mock_jsmin(monkeypatch):
     return create_patch(monkeypatch, "rjsmin.jsmin")
 
 
-def test_skips_unmatched_files(mock_jsmin):
-    files = {
-        "test1.html": None,
-        "test2.md": None,
-        "test3.css": None,
-    }
-
-    minify = Minify()
-    minify.build(BuildInfo(files))
-
-    mock_jsmin.assert_not_called()
-
-
 def test_valid_files(mock_jsmin):
     files = {
         "test1.js": MockFileInfo(b"contents1"),

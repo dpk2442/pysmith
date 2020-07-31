@@ -64,21 +64,6 @@ class TestBaseTemplate(object):
             "global2": macro2,
         }
 
-    def test_build_no_matching_files(self, mock_environment_constructor):
-        mock_process_file = unittest.mock.Mock()
-        files = {
-            "test1.html": None,
-            "test2.js": None,
-            "test3.css": None,
-        }
-
-        template = _BaseTemplate(match_pattern="*.md")
-        template.process_file = mock_process_file
-        template.build(BuildInfo(files))
-
-        mock_environment_constructor.assert_called_once_with()
-        mock_process_file.assert_not_called()
-
     def test_build_with_some_renames(self, mock_environment_constructor):
         mock_process_file = unittest.mock.Mock()
         mock_process_file.side_effect = [None, "renamed.md"]

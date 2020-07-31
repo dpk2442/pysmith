@@ -34,13 +34,10 @@ class _BaseTemplate(object):
                     self._jinja.globals[key] = val
 
     def build(self, build_info):
-        for file_name in list(build_info.files.keys()):
-            if not fnmatch.fnmatch(file_name, self._match_pattern):
-                continue
-
-            output_name = self.process_file(build_info, file_name, build_info.files[file_name])
+        for file_name, file_info in build_info.get_files_by_pattern(self._match_pattern):
+            output_name = self.process_file(build_info, file_name, file_info)
             if output_name is not None:
-                build_info.files[output_name] = build_info.files[file_name]
+                build_info.files[output_name] = file_info
                 del build_info.files[file_name]
 
     def process_file(self, build_info, file_name, file_info):  # pragma: no cover

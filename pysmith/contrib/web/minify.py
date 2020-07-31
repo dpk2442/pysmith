@@ -15,8 +15,5 @@ class Minify(object):
         self._js_match_pattern = js_match_pattern
 
     def build(self, build_info):
-        for file_name, f in build_info.files.items():
-            if not fnmatch.fnmatch(file_name, self._js_match_pattern):
-                continue
-
+        for _, f in build_info.get_files_by_pattern(self._js_match_pattern):
             f.contents = rjsmin.jsmin(f.contents)

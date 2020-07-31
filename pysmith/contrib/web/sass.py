@@ -22,11 +22,7 @@ class Sass(object):
         self._compile_args = compile_args
 
     def build(self, build_info):
-        for file_name in list(build_info.files.keys()):
-            if not self._match_pattern.search(file_name):
-                continue
-
-            f = build_info.files[file_name]
+        for file_name, f in build_info.get_files_by_regex(self._match_pattern):
             f.contents = sass.compile(string=f.contents, **self._compile_args).encode()
 
             file_name_parts = os.path.splitext(file_name)

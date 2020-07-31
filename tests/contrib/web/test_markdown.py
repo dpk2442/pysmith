@@ -16,19 +16,6 @@ def mock_markdown2(monkeypatch):
     return create_patch(monkeypatch, "markdown2.markdown")
 
 
-def test_skips_unmatched_files(mock_markdown2):
-    files = {
-        "test1.html": None,
-        "test2.js": None,
-        "test3.css": None,
-    }
-
-    markdown = Markdown()
-    markdown.build(BuildInfo(files))
-
-    mock_markdown2.assert_not_called()
-
-
 def test_valid_files(mock_markdown2):
     files = {
         "test1.md": MockFileInfo("contents1"),

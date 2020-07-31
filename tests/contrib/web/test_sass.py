@@ -16,19 +16,6 @@ def mock_compile(monkeypatch):
     return create_patch(monkeypatch, "sass.compile")
 
 
-def test_skips_unmatched_files(mock_compile):
-    files = {
-        "test1.html": None,
-        "test2.js": None,
-        "test3.css": None,
-    }
-
-    sass = Sass()
-    sass.build(BuildInfo(files))
-
-    mock_compile.assert_not_called()
-
-
 def test_valid_files_no_rename(mock_compile):
     files = {
         "test1.scss": MockFileInfo("contents1"),

@@ -20,5 +20,6 @@ Types
 The following types are passed to plugins during the build.
 
 .. autoclass:: pysmith.BuildInfo()
+    :members:
 
 .. autoclass:: pysmith.FileInfo()

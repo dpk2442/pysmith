@@ -34,7 +34,6 @@ class Collection(object):
         if self._collection_name in build_info.metadata[COLLECTIONS_KEY]:
             raise ValueError("Collection \"{}\" already defined".format(self._collection_name))
 
-        filtered_files = [f for file_name, f in build_info.files.items()
-                          if fnmatch.fnmatch(file_name, self._match_pattern)]
+        filtered_files = [f for file_name, f in build_info.get_files_by_pattern(self._match_pattern)]
         filtered_files.sort(key=self._order_by)
         build_info.metadata[COLLECTIONS_KEY][self._collection_name] = filtered_files
