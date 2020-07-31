@@ -37,8 +37,7 @@ class _BaseTemplate(object):
         for file_name, file_info in build_info.get_files_by_pattern(self._match_pattern):
             output_name = self.process_file(build_info, file_name, file_info)
             if output_name is not None:
-                build_info.files[output_name] = file_info
-                del build_info.files[file_name]
+                build_info.rename_file(file_name, output_name)
 
     def process_file(self, build_info, file_name, file_info):  # pragma: no cover
         raise NotImplementedError("process_file is not implemented")

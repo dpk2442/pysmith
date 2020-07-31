@@ -27,5 +27,4 @@ class Sass(object):
 
             file_name_parts = os.path.splitext(file_name)
             if file_name_parts[1] != self._output_extension:
-                del build_info.files[file_name]
-                build_info.files[file_name_parts[0] + self._output_extension] = f
+                build_info.rename_file(file_name, file_name_parts[0] + self._output_extension)
