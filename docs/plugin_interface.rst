@@ -23,3 +23,12 @@ The following types are passed to plugins during the build.
     :members:
 
 .. autoclass:: pysmith.FileInfo()
+
+
+Utils
+-----
+
+The following utilities are also available for plugins to use.
+
+.. automodule:: pysmith.plugin_util
+    :members:
