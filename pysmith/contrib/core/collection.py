@@ -1,3 +1,6 @@
+import pysmith.plugin_util
+
+
 COLLECTIONS_KEY = "collections"
 
 
@@ -18,11 +21,7 @@ class Collection(object):
     def __init__(self, *, collection_name, match_pattern, order_by):
         self._collection_name = collection_name
         self._match_pattern = match_pattern
-
-        if (isinstance(order_by, str)):
-            self._order_by = lambda f: f.metadata[order_by]
-        else:
-            self._order_by = order_by
+        self._order_by = pysmith.plugin_util.lambda_or_metadata_selector(order_by)
 
     def build(self, build_info):
         if COLLECTIONS_KEY not in build_info.metadata:

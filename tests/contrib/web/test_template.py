@@ -108,22 +108,6 @@ class TestContentTemplate(object):
 
 class TestLayoutTemplate(object):
 
-    def test_init_str_layout_selector(self, mock_environment_constructor):
-        file_info = MockFileInfo("contents", metadata={"layout": "test"})
-
-        template = LayoutTemplate(layout_selector="layout")
-
-        assert callable(template._layout_selector)
-        assert template._layout_selector(file_info) == "test"
-
-    def test_init_lambda(self, mock_environment_constructor):
-        file_info = MockFileInfo("contents", metadata={"randomPropName": "value"})
-
-        template = LayoutTemplate(layout_selector=lambda f: f.contents + f.metadata["randomPropName"])
-
-        assert callable(template._layout_selector)
-        assert template._layout_selector(file_info) == "contentsvalue"
-
     @pytest.fixture(ids=(
         "no_rename",
         "with_rename",

@@ -5,25 +5,6 @@ from pysmith.contrib.core.collection import COLLECTIONS_KEY, Collection
 from tests.util import MockFileInfo
 
 
-def test_init_str_order_by():
-    file_info = MockFileInfo("contents", metadata={"order": 1})
-
-    collection = Collection(collection_name="test", match_pattern="*.md", order_by="order")
-
-    assert callable(collection._order_by)
-    assert collection._order_by(file_info) == 1
-
-
-def test_init_lambda_order_by():
-    file_info = MockFileInfo("contents", metadata={"randomPropName": "a"})
-
-    collection = Collection(collection_name="test", match_pattern="*.md",
-                            order_by=lambda f: ord(f.metadata["randomPropName"]))
-
-    assert callable(collection._order_by)
-    assert collection._order_by(file_info) == 97
-
-
 def test_collections_key_defined():
     build_info = BuildInfo()
     build_info.metadata[COLLECTIONS_KEY] = {}

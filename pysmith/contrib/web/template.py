@@ -2,6 +2,8 @@ import os
 
 import jinja2
 
+import pysmith.plugin_util
+
 
 class _BaseTemplate(object):
     """
@@ -75,11 +77,7 @@ class LayoutTemplate(_BaseTemplate):
         super().__init__(**kwargs)
 
         self._output_extension = output_extension
-
-        if (isinstance(layout_selector, str)):
-            self._layout_selector = lambda f: f.metadata[layout_selector]
-        else:
-            self._layout_selector = layout_selector
+        self._layout_selector = pysmith.plugin_util.lambda_or_metadata_selector(layout_selector)
 
     def process_file(self, build_info, file_name, file_info):
         template = self._jinja.get_template(self._layout_selector(file_info))
