@@ -7,5 +7,6 @@ Web
 
     web/markdown
     web/minify
+    web/permalink
     web/sass
     web/template

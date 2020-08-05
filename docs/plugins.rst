@@ -32,6 +32,10 @@ The following plugins are designed specifically for building static sites.
 
   - This plugin minifies javascript using jsmin.
 
+- :doc:`Permalink <plugins/web/permalink>`
+
+  - This plugin renames files so that the resulting URLs are pretty.
+
 - :doc:`Sass <plugins/web/sass>`
 
   - This plugin compiles sass/scss files into css.
