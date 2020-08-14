@@ -29,7 +29,11 @@ def test_duplicate_collection_name():
         collection.build(build_info)
 
 
-def test_build():
+@pytest.mark.parametrize("reverse", (
+    True,
+    False,
+))
+def test_build(reverse):
     ordered_file_1 = MockFileInfo("contents1", metadata={"order": 1})
     ordered_file_2 = MockFileInfo("contents2", metadata={"order": 2})
     ordered_file_3 = MockFileInfo("contents3", metadata={"order": 3})
@@ -44,13 +48,21 @@ def test_build():
     }
 
     build_info = BuildInfo(files)
-    collection = Collection(collection_name="test", match_pattern="*.md", order_by="order")
+    collection = Collection(collection_name="test", match_pattern="*.md", order_by="order", reverse=reverse)
     collection.build(build_info)
 
     assert COLLECTIONS_KEY in build_info.metadata
     assert "test" in build_info.metadata[COLLECTIONS_KEY]
-    assert build_info.metadata[COLLECTIONS_KEY]["test"] == [
-        ordered_file_1,
-        ordered_file_2,
-        ordered_file_3,
-    ]
+
+    if reverse:
+        assert build_info.metadata[COLLECTIONS_KEY]["test"] == [
+            ordered_file_3,
+            ordered_file_2,
+            ordered_file_1,
+        ]
+    else:
+        assert build_info.metadata[COLLECTIONS_KEY]["test"] == [
+            ordered_file_1,
+            ordered_file_2,
+            ordered_file_3,
+        ]
