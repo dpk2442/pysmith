@@ -25,6 +25,14 @@ The following types are passed to plugins during the build.
 .. autoclass:: pysmith.FileInfo()
 
 
+Logging
+-------
+
+If plugins wish to log message, they should create a logger using :func:`logging.getLogger`, passing
+:code:`pysmith.plugin.<plugin_name>` as the logger name. :meth:`~pysmith.Pysmith.enable_logging` configures logging
+under the :code:`pysmith` namespace, so plugins should use this name for logging to be configured correctly.
+
+
 Utils
 -----
 
