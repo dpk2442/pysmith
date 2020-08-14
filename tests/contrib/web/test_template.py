@@ -97,12 +97,16 @@ class TestContentTemplate(object):
         mock_template = mock_from_string.return_value
         mock_template.render.return_value = "rendered"
 
+        build_info = BuildInfo()
+        build_info.metadata["key"] = "value"
         file_info = MockFileInfo(b"original")
         template = ContentTemplate()
-        template.process_file(None, "name", file_info)
+        template.process_file(build_info, "name", file_info)
 
         mock_from_string.assert_called_once_with("original")
-        mock_template.render.assert_called_once_with()
+        mock_template.render.assert_called_once_with(site={
+            "key": "value",
+        })
         assert file_info == MockFileInfo(b"rendered")
 
 

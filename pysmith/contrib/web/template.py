@@ -51,22 +51,23 @@ class _BaseTemplate(object):
 class ContentTemplate(_BaseTemplate):
     """
         Treats the contents of the files as a template and renders it. This can be used to do pre-processing on the
-        source files. All parameters specified in :class:`_BaseTemplate` are valid for this class as well.
+        source files. All parameters specified in :class:`_BaseTemplate` are valid for this class as well. When the
+        template is rendered, the build info :attr:`~pysmith.BuildInfo.metadata` will be available as :code:`site`.
     """
 
     def process_file(self, build_info, file_name, file_info):
         template = self._jinja.from_string(file_info.contents.decode())
-        file_info.contents = template.render().encode()
+        file_info.contents = template.render(site=build_info.metadata).encode()
 
 
 class LayoutTemplate(_BaseTemplate):
     """
         Treats the contents of the files as a variable to pass into a template. The layout to use is selected by the
-        `layout_selector` parameter. When the template is rendered, the file :attr:`~pysmith.FileInfo.contents` will be
-        available in the rendering context as `contents`, the file :attr:`~pysmith.FileInfo.metadata` will be available
-        as `page`, and the build info :attr:`~pysmith.BuildInfo.metadata` will be available as `site`. In addition to
-        the parameters specified below, all parameters specified in :class:`_BaseTemplate` are valid for this class as
-        well.
+        :code:`layout_selector` parameter. When the template is rendered, the file :attr:`~pysmith.FileInfo.contents`
+        will be available in the rendering context as :code:`contents`, the file :attr:`~pysmith.FileInfo.metadata`
+        will be available as :code:`page`, and the build info :attr:`~pysmith.BuildInfo.metadata` will be available as
+        :code:`site`. In addition to the parameters specified below, all parameters specified in :class:`_BaseTemplate`
+        are valid for this class as well.
 
         :param layout_selector: The layout selector. If this is a string, it will be used as the key to look up the
                                 template in the file metadata. If this is a function, it will be executed to find the
