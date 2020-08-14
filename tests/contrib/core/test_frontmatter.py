@@ -60,3 +60,18 @@ def test_existing_metadata(mock_parse):
             "newKey": "value",
         })
     }
+
+
+def test_parse_raises_exception(mock_parse):
+    build_info = BuildInfo(files={
+        "file1": MockFileInfo("contents"),
+    })
+
+    mock_parse.side_effect = Exception("error")
+
+    frontmatter = Frontmatter()
+    frontmatter.build(build_info)
+
+    assert build_info.files == {
+        "file1": MockFileInfo("contents"),
+    }

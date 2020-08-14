@@ -1,4 +1,9 @@
+import logging
+
 import frontmatter
+
+
+logger = logging.getLogger("pysmith.plugin.frontmatter")
 
 
 class Frontmatter(object):
@@ -14,6 +19,9 @@ class Frontmatter(object):
 
     def build(self, build_info):
         for file_name, file_info in build_info.get_files_by_pattern(self._match_pattern):
-            metadata, contents = frontmatter.parse(file_info.contents)
-            file_info.metadata.update(metadata)
-            file_info.contents = contents.encode()
+            try:
+                metadata, contents = frontmatter.parse(file_info.contents)
+                file_info.metadata.update(metadata)
+                file_info.contents = contents.encode()
+            except Exception:
+                logger.error("Error parsing frontmatter for {}".format(file_name))
