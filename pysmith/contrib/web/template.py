@@ -1,8 +1,12 @@
+import logging
 import os
 
 import jinja2
 
 import pysmith.plugin_util
+
+
+logger = logging.getLogger("pysmith.plugin.template")
 
 
 class _BaseTemplate(object):
@@ -80,7 +84,13 @@ class LayoutTemplate(_BaseTemplate):
         self._layout_selector = pysmith.plugin_util.lambda_or_metadata_selector(layout_selector)
 
     def process_file(self, build_info, file_name, file_info):
-        template = self._jinja.get_template(self._layout_selector(file_info))
+        try:
+            template_name = self._layout_selector(file_info)
+        except Exception:
+            logger.error("Could not find layout for {}".format(file_name))
+            return None
+
+        template = self._jinja.get_template(template_name)
         file_info.contents = template.render(contents=file_info.contents.decode(),
                                              page=file_info.metadata,
                                              site=build_info.metadata).encode()

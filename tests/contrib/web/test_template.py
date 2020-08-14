@@ -136,3 +136,14 @@ class TestLayoutTemplate(object):
             contents="contents", page={"layout": "test"}, site={"key": "value"})
         assert output_name == expected_output_name
         assert file_info == MockFileInfo(b"rendered", metadata={"layout": "test"})
+
+    def test_exception_getting_layout(self, mock_environment_constructor):
+        mock_get_template = mock_environment_constructor.return_value.get_template
+
+        file_info = MockFileInfo(b"contents")
+        build_info = BuildInfo()
+        template = LayoutTemplate()
+        output_name = template.process_file(build_info, "file.txt", file_info)
+
+        assert output_name is None
+        mock_get_template.assert_not_called()
