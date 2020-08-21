@@ -227,7 +227,7 @@ class Pysmith(object):
         for file_name, file_info in files.items():
             self._write_file(file_name, file_info.contents)
 
-        logger.info("Build completed in {:.2}ms".format(time.time() - start_time))
+        logger.info("Build completed in {:.2}s".format(time.time() - start_time))
 
     def _handle_clean_error(self, fn, path, exception_info):
         if exception_info[0] != FileNotFoundError:
